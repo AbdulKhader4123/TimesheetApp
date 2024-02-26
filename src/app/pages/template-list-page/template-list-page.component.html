@@ -1,0 +1,22 @@
+<p-card header="Templates">
+    <form [formGroup]="formGroup" class="card flex flex-wrap gap-5 mb-5">
+        <div>
+            <label for="fromDate" class="font-bold block mb-2"> From</label>
+            <p-calendar formControlName="fromDate"  inputId="fromDate" view="month" dateFormat="mm/yy"></p-calendar>
+        </div>
+        <div>
+            <label for="toDate" class="font-bold block mb-2"> To</label>
+            <p-calendar formControlName="toDate" inputId="toDate" view="month" dateFormat="mm/yy"></p-calendar>
+        </div>
+        <div class="align-self-end">
+            <p-button label="Apply Filters" (click)="submit()"></p-button>
+        </div>
+    </form>
+    <template-list *ngIf="templates.length > 0" [templates]="templates" tableHeader="Template name" itemDetailsRoute="/templates"/>
+    <div *ngIf="noTemplatesFound" class="flex justify-content-center h-30rem">
+        <img src="/assets/no_data.png"/>
+    </div>
+    <div *ngIf="templateLoadError" class="flex justify-content-center h-30rem">
+        <img src="/assets/load_error.png"/>
+    </div>
+</p-card>

@@ -1,0 +1,19 @@
+
+<p-card header="Time Sheet">
+    <div *ngIf="timesheetData" class="mb-5">
+        <div class="flex flex-wrap mb-3 gap-5">
+            <p><strong>TimeSheet Name:</strong> {{timesheetData?.name}}</p>
+            <p style="text-align: left;"><strong>Status:</strong> <p-tag [style]="{'min-width': '150px', 'text-align': 'left', 'margin-left': '20px'}" [value]="timesheetData?.status | titlecase" [severity]="getSeverity(timesheetData?.status)"></p-tag></p>
+        </div>
+        <div class="flex flex-wrap mb-3 gap-3">
+            <p-button label="Go back" [outlined]="true" icon="pi pi-arrow-left" (click)="back()"></p-button>
+            <p-button label="Save Changes" *ngIf="timesheetOwner" [disabled]="timesheetData.status !== 'draft'" (click)="save()"></p-button>
+            <p-button type="button" severity="danger" *ngIf="timesheetOwner && timesheetData.status !== 'draft'" (click)="withdrawDialog($event, timesheetData)" label="Withdraw"></p-button>
+        </div>
+        <p-confirmDialog></p-confirmDialog>
+    </div>
+    <time-sheet-table *ngIf="timesheetData" [timesheetData]="timesheetData" [editable]="timesheetOwner && timesheetData.status === 'draft'"></time-sheet-table>
+    <div *ngIf="timesheetLoadError" class="flex justify-content-center h-30rem">
+        <img src="/assets/load_error.png"/>
+    </div>
+</p-card>

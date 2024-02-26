@@ -1,0 +1,13 @@
+<p-card header="Create Time Sheet">
+    <div *ngIf="templateData" class="mb-5">
+        <p class="mb-4"><strong>TimeSheet Template Name:</strong> {{templateData?.name}}</p>
+        <div class="flex flex-wrap mb-3 gap-3">
+            <p-button label="Go back" [outlined]="true" icon="pi pi-arrow-left" (click)="back()"></p-button>
+            <p-button label="Create Timesheet from Template" (click)="createTimesheet()"></p-button>
+        </div>
+    </div>
+    <template-table *ngIf="templateData" [templateData]="templateData" />
+    <div *ngIf="templateLoadError" class="flex justify-content-center h-30rem">
+        <img src="/assets/load_error.png"/>
+    </div>
+</p-card>

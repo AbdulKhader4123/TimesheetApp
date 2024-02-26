@@ -1,0 +1,53 @@
+<p-card header="My Approvals">
+    <p-table *ngIf="timesheets.length > 0" [value]="timesheets" dataKey="id" [tableStyle]="{ 'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:20%">Timesheet name</th>
+                <th style="width:20%">User</th>
+                <th style="width:20%">Status</th>
+                <th style="width:20%">Approver</th>
+                <th style="width:20%">Reviewer</th>
+                <th style="width:20%">Actions</th>
+            </tr>
+          
+        </ng-template>
+        <ng-template pTemplate="body" let-timesheet>
+            <tr>
+                <td>
+                    <a [routerLink]="['/timesheets', timesheet._id]" class="cursor-pointer template-name" >{{ timesheet.name }}</a>
+                </td>
+                <td>
+                    {{timesheet?.email}}
+                </td>
+                <td>
+                    <p-tag [style]="{'min-width': '150px'}" [value]="timesheet.status | titlecase" [severity]="getSeverity(timesheet.status)"></p-tag>
+                </td>
+                <td>
+                    {{timesheet?.approver}}
+                </td>
+                <td>
+                    {{timesheet?.reviewer}}
+                </td>
+                <td>
+                    <div class="card flex justify-content-center gap-5">
+                        <button pButton type="button" [disabled]="timesheet.status === 'approved' || timesheet.status === 'reviewed'" *ngIf="activeAccountName !== timesheet?.approver" (click)="reviewDialog($event, timesheet)" label="Review"></button>
+                        <button pButton type="button" [disabled]="timesheet.status === 'approved'" *ngIf="activeAccountName === timesheet?.approver" (click)="approveDialog($event, timesheet)" label="Approve"></button>
+                        <p-button type="button" severity="danger" [disabled]="timesheet.status === 'rejected'" (click)="rejectDialog(timesheet)" label="Reject"></p-button>
+                        <p-confirmDialog></p-confirmDialog>
+                        <p-dialog [header]="rejectModalHeader" [(visible)]="rejectModalVisible" [modal]="true"  [draggable]="false" [resizable]="false">
+                            <p>Do you want to reject this timesheet?</p>
+                            <div class="flex align-items-center gap-3">
+                                <label for="comments">Reject Reason</label>
+                                <textarea id="comments" rows="4" cols="30" [(ngModel)]="rejectReason"></textarea>
+                            </div>
+                        <p-button [disabled]="!rejectReason" type="button" severity="danger" (click)="rejectTimesheet(selectedTimesheet._id)" label="Reject"></p-button>
+                        </p-dialog>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div *ngIf="noTimesheetsFound" class="flex justify-content-center h-30rem">
+        <img src="/assets/no_data.png"/>
+    </div>
+</p-card>

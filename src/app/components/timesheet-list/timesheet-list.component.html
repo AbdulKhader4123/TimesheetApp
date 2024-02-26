@@ -1,0 +1,61 @@
+<p-table [value]="timesheets" dataKey="id" [tableStyle]="{ 'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:20%">Timesheet name</th>
+            <th style="width:20%">Status</th>
+            <th style="width:20%">Approver</th>
+            <th style="width:20%">Reviewer</th>
+            <th style="width:20%">Actions</th>
+        </tr>
+      
+    </ng-template>
+    <ng-template pTemplate="body" let-timesheet>
+        <tr>
+            <td>
+                <a [routerLink]="['/timesheets', timesheet._id]" class="cursor-pointer template-name" >{{ timesheet.name }}</a>
+            </td>
+            <td>
+                <p-tag [style]="{'min-width': '150px'}" [value]="timesheet.status | titlecase" [severity]="getSeverity(timesheet.status)"></p-tag>
+            </td>
+            <td>
+                {{timesheet?.approver || "NA"}}
+            </td>
+            <td>
+                {{timesheet?.reviewer || "NA"}}
+            </td>
+            <td>
+                <div class="card flex justify-content-center gap-5">
+                    <button pButton type="button" [disabled]="timesheet.status === 'approved'"  (click)="submitDialog(timesheet)" label="Submit"></button>
+                    <p-button type="button" severity="danger" [disabled]="timesheet.status === 'draft'" (click)="withdrawDialog($event, timesheet)" label="Withdraw"></p-button>
+                    <p-confirmDialog></p-confirmDialog>
+                    <p-dialog [header]="submitModalHeader" [(visible)]="submitModalVisible" [modal]="true"  [draggable]="false" [resizable]="false">
+                        <p-messages severity="info">
+                            <ng-template pTemplate>
+                                <div class="ml-2">If no reviewer, enter approver's email for both.</div>
+                            </ng-template>
+                        </p-messages>
+                        <p style="text-align: left;"><strong>Status:</strong> <p-tag [style]="{'min-width': '150px', 'text-align': 'left', 'margin-left': '20px'}" [value]="selectedTimesheet?.status | titlecase" [severity]="getSeverity(selectedTimesheet?.status)"></p-tag></p>
+                        <form [formGroup]="approverForm" class="flex flex-wrap gap-5">
+                            <div>
+                                <div class="flex gap-2">
+                                    <p><strong>Approver:</strong></p>
+                                    <input pInputText id="approver" formControlName="approver" type="email" />
+                                </div>
+                                <small *ngIf="approver?.invalid" class="p-error">Approver email is required.</small>
+                            </div>
+                            <div>
+                                <div class="flex gap-2">
+                                    <p><strong>Reviewer:</strong></p>
+                                    <input pInputText id="reviewer" formControlName="reviewer" type="email" />
+                                </div>
+                                <small *ngIf="reviewer?.invalid" class="p-error">Reviewer email is required.</small>
+                            </div>
+                           
+                        </form>
+                        <button [disabled]="!approverForm.valid" pButton class="mt-5" type="button" (click)="submitTimesheet(selectedTimesheet)" label="Submit"></button>
+                    </p-dialog>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

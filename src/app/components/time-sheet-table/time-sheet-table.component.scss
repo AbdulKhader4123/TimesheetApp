@@ -1,0 +1,9 @@
+:host ::ng-deep {
+    .row-holiday {
+        background-color: rgb(255, 204, 204) !important;
+    }
+
+    td, th{
+        text-align: center;
+    }
+}

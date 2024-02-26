@@ -1,0 +1,17 @@
+<p-card header="Create Time Sheet Template">
+    <p class="mb-4"><strong>TimeSheet Template Name:</strong> {{timeSheetName}}</p>
+    <form [formGroup]="formGroup" class="card flex flex-wrap gap-5 mb-5 calendar-container">
+        <div>
+            <label for="selectHolidays" class="font-bold block mb-2"> Select Holidays</label>
+            <p-calendar #calendarRef formControlName="holidays" dateFormat="dd/mm/yy" [disabledDays]="[0,6]" (onMonthChange)="monthChange($event)" selectionMode="multiple" [inline]="true" inputId="selectHolidays"></p-calendar>
+        </div>
+        <div>
+            <p class="mt-4">Selected Holidays ({{formGroup.controls['holidays'].value?.length || 0}})</p>
+            <div class="flex flex-wrap gap-5 mt-5">
+                <p-button label="Preview" severity="secondary" [disabled]="!formGroup.valid" (click)="preview()"></p-button>
+                <p-button label="Create Template" [disabled]="!formGroup.valid" (click)="createTemplate()"></p-button>
+            </div>
+        </div>
+    </form>
+    <template-table *ngIf="templateData" [templateData]="templateData" />
+</p-card>

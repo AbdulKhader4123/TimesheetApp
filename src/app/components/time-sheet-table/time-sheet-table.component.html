@@ -1,0 +1,89 @@
+<p-table [value]="timesheetData?.days" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:10%">Date</th>
+            <th style="width:10%">Day</th>
+            <th style="width:10%">Normal Worked Hours</th>
+            <th style="width:10%">Overtime</th>
+            <th style="width:10%">Sick</th>
+            <th style="width:10%">Planned Leave/Public Holiday</th>
+            <th style="width:10%">Total hours worked</th>
+            <th style="width:20%">Remarks</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-day let-editing="editing">
+        <tr [ngClass]="{'row-holiday': day.type !== 'weekday'}">
+            <td>
+                {{ day.date }}
+            </td>
+            <td>
+                {{ day.day }}
+            </td>
+            <td>
+                {{ day.normal_worked_hours }}
+            </td>
+            @if (editable) {
+                <td [pEditableColumn]="day.overtime" pEditableColumnField="overtime">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="number" min="0" style="width: 50%;" (change)="hourChanged(day)" [(ngModel)]="day.overtime" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ day.overtime }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td [pEditableColumn]="day.sick" pEditableColumnField="sick">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="number" min="0" max="8" style="width: 50%;" (change)="hourChanged(day)" [(ngModel)]="day.sick" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ day.sick }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td [pEditableColumn]="day.planned_leave" pEditableColumnField="planned_leave">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="number" min="0" max="8" style="width: 50%;" (change)="hourChanged(day)" [(ngModel)]="day.planned_leave" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ day.planned_leave }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    {{ day.total_hours >= 0 ? day.total_hours : 0}}
+                </td>
+                <td [pEditableColumn]="day.remarks" pEditableColumnField="remarks">
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText [(ngModel)]="day.remarks" width="100%"/>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ day.remarks }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+            }@else {
+                <td>
+                    {{ day.overtime }}
+                </td>
+                <td>
+                    {{ day.sick }}
+                </td>
+                <td>
+                    {{ day.planned_leave }}
+                </td>
+                <td>
+                    {{ day.total_hours}}
+                </td>
+                <td>
+                    {{ day.remarks }}
+                </td>
+            }
+        
+        </tr>
+    </ng-template>
+</p-table>

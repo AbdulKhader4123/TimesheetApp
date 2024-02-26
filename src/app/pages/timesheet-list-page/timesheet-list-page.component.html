@@ -1,0 +1,19 @@
+<p-card header="My Time Sheets">
+    <form [formGroup]="formGroup" class="card flex flex-wrap gap-5 mb-5">
+        <div>
+            <label for="fromDate" class="font-bold block mb-2"> From</label>
+            <p-calendar formControlName="fromDate"  inputId="fromDate" view="month" dateFormat="mm/yy"></p-calendar>
+        </div>
+        <div>
+            <label for="toDate" class="font-bold block mb-2"> To</label>
+            <p-calendar formControlName="toDate" inputId="toDate" view="month" dateFormat="mm/yy"></p-calendar>
+        </div>
+        <div class="align-self-end">
+            <p-button label="Apply Filters" (click)="submit()"></p-button>
+        </div>
+    </form>
+    <timesheet-list *ngIf="timesheets.length > 0" [timesheets]="timesheets" />
+    <div *ngIf="noTimesheetsFound" class="flex justify-content-center h-30rem">
+        <img src="/assets/no_data.png"/>
+    </div>
+</p-card>

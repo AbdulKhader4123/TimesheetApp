@@ -1,0 +1,38 @@
+<p-table [value]="templateData?.days" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Normal Worked Hours</th>
+            <th>Overtime</th>
+            <th>Sick</th>
+            <th>Planned Leave/Public Holiday</th>
+            <th>Total hours worked</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-day let-editing="editing">
+        <tr [ngClass]="{'row-holiday': day.type !== 'weekday'}">
+            <td>
+                {{ day.date }}
+            </td>
+            <td>
+                {{ day.day }}
+            </td>
+            <td>
+                {{ day.normal_worked_hours }}
+            </td>
+            <td>
+                {{ day.overtime }}
+            </td>
+            <td>
+                {{ day.sick }}
+            </td>
+            <td>
+                {{ day.planned_leave }}
+            </td>
+            <td>
+                {{ day.total_hours }}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
