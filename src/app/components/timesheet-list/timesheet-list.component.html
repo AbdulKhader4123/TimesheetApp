@@ -25,7 +25,7 @@
             </td>
             <td>
                 <div class="card flex justify-content-center gap-5">
-                    <button pButton type="button" [disabled]="timesheet.status === 'approved'"  (click)="submitDialog(timesheet)" label="Submit"></button>
+                    <button pButton type="button" [disabled]="timesheet.status !== 'draft'"  (click)="submitDialog(timesheet)" label="Submit"></button>
                     <p-button type="button" severity="danger" [disabled]="timesheet.status === 'draft'" (click)="withdrawDialog($event, timesheet)" label="Withdraw"></p-button>
                     <p-confirmDialog></p-confirmDialog>
                     <p-dialog [header]="submitModalHeader" [(visible)]="submitModalVisible" [modal]="true"  [draggable]="false" [resizable]="false">

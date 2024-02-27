@@ -117,7 +117,8 @@ export class TimesheetListComponent {
       { 
         timesheetId: timesheet._id,
         approver: this.approver?.value?.trim(),
-        reviewer: this.reviewer?.value?.trim()
+        reviewer: this.reviewer?.value?.trim(),
+        status: STATUS.SUBMITTED
       }
       ).pipe(
       takeUntilDestroyed(this.destroyRef)
